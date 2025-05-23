@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -64,29 +64,5 @@ class AuthController extends Controller
         }
 
         return response()->json(['message' => 'Successfully logged out']);
-    }
-
-    public function getUser()
-    {
-        try {
-            $user = Auth::user();
-            if (!$user) {
-                return response()->json(['error' => 'User not found'], 404);
-            }
-            return response()->json($user);
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'Failed to fetch user profile'], 500);
-        }
-    }
-
-    public function updateUser(Request $request)
-    {
-        try {
-            $user = Auth::user();
-            $user->update($request->only(['name', 'email']));
-            return response()->json($user);
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'Failed to update user'], 500);
-        }
     }
 }
